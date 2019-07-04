@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+        <title>Log in</title>
+        <style type="text/css">
+.even {
+    background-color: dodgerblue;
+    padding: 10px;
+    border-bottom: 1px solid black
+}
+
+.odd  {
+    background-color: white;
+    padding: 10px;
+    border-bottom: 1px solid black
+}
+
+.someerow {
+    border-bottom: 1px solid dodgerblue;
+    padding-bottom: 10px;
+    padding-top: 20px;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    text-align: center;
+    width: 100%
+}
+
+            
+.accordion, .button {
+  background-color: dodgerblue;
+  border-color: lightblue;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.active, .accordion:hover, .button:hover {
+  background-color: #2a5cbd;
+}
+
+.button-decline{
+  background-color: red;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.button-decline:hover{
+    background-color: darkred
+}
+
+.button-accept{
+  background-color: green;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.button-accept:hover{
+    background-color: darkgreen
+}
+
+.button-grey{
+  background-color: darkgray;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 300px;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;    
+}
+
+.button-grey:hover{
+    background-color: gray
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  border-color: lightblue;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+
+        </style>    
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"></link>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+  
+    $( function() {
+        $( "#tabs" ).tabs({
+          collapsible: true
+        }); 
+    });
+  
+    $( function() {
+        $( "#dob" ).datepicker();
+    });
+    
+    
+                function selectHandler()
+            {             
+                $("#addAlbum").load("AddAlbum")
+            }
+            
+//            $(document).ready(function(){
+//                    console.log($("#f\\:dummy").val())
+//                    console.log(loggedin);
+//                    if (loggedin == false){
+//                        console.log("false");
+//                        window.location.replace("http://www.w3schools.com");
+//                    }
+//                    console.log("twwo");
+//
+//            })
+            
+    //graph (charts)
+    
+            google.charts.load('current', {packages: ['corechart', 'bar']});
+            google.charts.setOnLoadCallback(function () {
+                $("#f\\:chartbutton").on("click", null, null, plotIt);
+            });
+
+            function plotIt()
+            {
+                event.preventDefault();
+
+                //var p = $("#f\\:authorID").val();
+                $.post("CustomerCount", {}, callBackPlot);
+            }
+
+            function callBackPlot(queryStr)
+            {
+                var data = new google.visualization.arrayToDataTable(
+                      $.parseJSON(queryStr)
+                    );
+
+                var options = {
+                    chart: {
+                        title: 'Shoots per Customer',
+                        subtitle: '',
+                    }
+                };
+
+                var chart = new google.charts.Bar(document.getElementById('plot'));
+                chart.draw(data, google.charts.Bar.convertOptions(options));
+            }
+    
+    // end charts
+
+    
+  </script>
+</h:head>
+    <h:body>
+  <c:choose>
+      <c:when test="${controller.logged_in_bean_prop}">
+        <f:view>
+<!--                <h:inputHidden id="dummy" value="#{controller.logged_in_bean_prop}"/>                
+                <h1>#{controller.logged_in_bean_prop}</h1>
+                <h1>#{testbean.test}</h1>-->
+                
+                
+                <div id="tabs">
+                <ul>
+                  <li><a href="#tab-1">Portfolio</a></li>
+                  <li><a href="#tab-2">Albums</a></li>
+                  <li><a href="#tab-3">Reservations</a></li>
+                  <li><a href="#tab-4">History</a></li>
+                </ul>
+                <div id="tab-1">
+            <h:form enctype="multipart/form-data">
+                    <p>
+                        <h1>${photographer.fname} ${photographer.lname}</h1>
+                        <h3>Date of Birth:</h3>     ${photographer.dob}
+                        <h3>Nationality:</h3>       ${photographer.nationality}
+                        <h3>Address:</h3>           ${photographer.address}
+                        <h3>Education:</h3>         High School: <h:selectBooleanCheckbox value="${photographer.educationHS}" disabled="True"/> 
+                                                    Bachelor's: <h:selectBooleanCheckbox value="${photographer.educationBS}" disabled="True"/>
+                                                    Master's: <h:selectBooleanCheckbox value="${photographer.educationMS}" disabled="True"/>
+                        <h3>Experience:</h3>        ${photographer.experience}
+                        <h3>Service Charges:</h3>   ${photographer.servicecharge}
+                    </p>
+                        <h:commandButton value="Edit Portfolio" class="button" action="editportfolio.xhtml"/><br/><br/>
+                        <h:commandButton value="Log Out" class="button" action="#{photographer.logout}"/>
+            </h:form>
+                </div>
+
+                    
+                    
+                  <div id="tab-2">
+            <h:form >
+                      
+<!--                      <h:commandButton type="button" value="Add Album" onclick="selectHandler()" />
+                    <div id="addAlbum" ></div>  -->
+
+                    <fieldset>
+                        <legend>Add a new album!</legend>
+                            Please enter the album name: <h:inputText value="#{albums.newAlbumName}" size="10" /><br/><br/>
+                            <h:commandButton class="button-grey" type="submit" value="Add" action="#{albums.addAlbum()}" />
+                    </fieldset>
+                    
+<c:if test="${albums.albums.size() > 0}">
+    <h:dataTable style="width: 100%; padding: 10px; text-align: center" value="#{albums.albums}" var="i" rowClasses="someerow">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        <div style="padding-bottom: 20px; padding-top: 20px; border-bottom: 1px solid black ">
+                            #{i.ID}                        
+                        </div>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        <div style="padding-bottom: 20px; padding-top: 20px; border-bottom: 1px solid black ">
+                        #{i.albumname}
+                        </div>
+                    </h:column>
+                    <h:column>
+                        <!--<f:facet name="header"></f:facet>                        -->
+                        <div style="padding-bottom: 15px; padding-top: 20px; border-bottom: 1px solid black ">
+                        <h:commandButton value="View Album" action="#{albums.testclick(i)}" />
+                        </div>
+                    </h:column>
+                </h:dataTable>
+</c:if>
+            </h:form>
+                </div>
+
+                    
+                    
+                    
+                  <div id="tab-3">
+
+            <c:choose>
+                <c:when test="${reservations.reservations.size() > 0}">
+
+                      <h:form >
+
+                      
+                                              <h:dataTable value="#{reservations.reservations}" var="i">
+                    <h:column>
+                        <!--<f:facet name="header">Photographers</f:facet>-->
+                        <!--FIRST ACCORDIAN AND PANEL ***************************************************-->
+                        
+                        <button type = "button" class="accordion">${i.getCustomername(i.customerID)} </button>
+                        <div class="panel">
+                          <p>
+                              <h3>Photographer</h3>       ${i.photographerID}
+                              <h3>Venue</h3>           ${i.venue}
+                              <h3>Date:</h3>         ${i.date_of_shoot}
+                              <h3>Time:</h3>           ${i.time_of_shoot}
+                              <h3>Proposed Amount</h3>         ${i.proposedAmount}
+                              <h3>Status</h3>           ${i.status}
+                                <br/><br/>
+<!--                                <c:if test="${i.status.trim() == 'Requested'.trim()}">-->
+                                <h:commandButton value="Accept" class="button-decline" action="#{reservations.accept(i.ID)}"/><br/><br/>
+                                <h:commandButton value="Decline" class="button-accept" action="#{reservations.decline(i.ID)}"/>
+<!--                                </c:if>-->
+                          </p>
+                        </div><br/><br/>
+                    </h:column>
+                </h:dataTable>                    
+                    
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; acc.length > i ; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight){
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+  });
+}
+</script>
+                      
+                      
+                              </h:form>
+                            </c:when>
+                            <c:otherwise>
+                                <h3>You don't have any reservations!<br/>Please wait for the right customers to find you! :D</h3>
+                                </c:otherwise>
+                        </c:choose>
+
+                  </div>
+
+                <div id="tab-4">
+            <h:form id="f" >
+                    <h:commandButton class="button" value="Plot" id="chartbutton" /><br/><br/>
+                    <div id="plot" style="width: 50%; height: 50%"/>
+                                   </h:form>
+ 
+                </div>
+
+                
+                </div>
+
+
+        </f:view>
+              </c:when>
+    <c:otherwise>
+Sorry, you don't have permission! :(
+    </c:otherwise>
+    </c:choose>
+    </h:body>
+</html>

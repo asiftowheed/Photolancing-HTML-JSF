@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+            xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <head>
+        <title>New Upload!</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></link>
+    
+        <style>
+            
+.clipped {
+    width: 100%; /*Scales image to 150% width of parent container*/
+    height: 100%;
+    float: left; /*Floats image to left of container - clipping right hand side*/
+    object-fit:scale-down;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    text-align: center
+}
+
+.someerow {
+    border-bottom: 1px solid dodgerblue;
+    padding-bottom: 10px;
+    padding-top: 20px;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    text-align: center;
+    width: 100%
+}
+.someecontainer {
+    width: 1000px; /*Use this to control width of the parent container, hence the image*/
+    height: 750px;
+    overflow: hidden;
+    padding-bottom: 40px;
+    padding-top: 40px;
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    text-align: center
+}
+
+.someetable{
+    align-content: center;
+    align-items: center;
+    align-self: center;
+    text-align: center;
+    padding-top: 40px;
+}
+
+
+
+
+            
+        </style>
+    
+    </head>
+    <body>
+  <c:choose>
+      <c:when test="${controller.logged_in_bean_prop}">
+          <h1 style="padding-top: 20px; padding-left: 20px">${selectedAlbum.selected.albumname}</h1><br/><br/>
+
+            <h:form enctype="multipart/form-data">
+                <fieldset style="padding-top: 20px; padding-left: 20px; padding-bottom: 40px; border-bottom: 2px solid blue">
+                    <legend style="border-bottom: 1px solid dodgerblue; width: 800px">Adding a new item</legend>
+            <!--Item Name   : <h:inputText value="#{imageHandler.itemName}"/><br/>-->
+            Item Image  : <h:inputFile value="#{imageHandler.file}"/><br/>
+            <h:commandButton value="Submit" action="#{imageHandler.submit}"/>
+            </fieldset>
+            </h:form>
+            
+            
+            <!--*********************-->
+            
+
+            <h:form >
+                <div style="padding-left: 20px; padding-top: 40px">
+            <h:dataTable class="someetable" value="#{images.images}" var="i" rowClasses="someerow">
+                    <h:column>
+                        <f:facet name="header">IMAGES IN THE ALBUM</f:facet>
+                        <div class="someecontainer">
+                            <h:graphicImage class="clipped" name="/images/#{i.filename}" /><br/> <!-- should be    name="#{i.directorypath}#{i.filename}" -->
+                        </div>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">EDIT</f:facet>
+                        <div style="padding-left: 20px">
+                        <h:commandButton class="btn btn-danger" value="Delete" action="#{images.deleteImage(i.ID)}"/>
+                        </div>
+                    </h:column>
+                </h:dataTable>
+                </div>
+        </h:form>
+
+            
+            
+            
+              </c:when>
+    <c:otherwise>
+Sorry, you don't have permission! :(
+    </c:otherwise>
+    </c:choose>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    </body>
+</html>

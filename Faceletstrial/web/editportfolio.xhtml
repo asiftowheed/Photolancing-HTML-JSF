@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+        <title>Log in</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"></link>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  
+    $( function() {
+        $( "#tabs" ).tabs({
+          collapsible: true
+        }); 
+    });
+  
+    $( function() {
+        $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1960:2020"
+   });
+    });
+  
+  function calculate(operation){
+    $("#calcResult").text(()=> {
+      num1 = Number($("#first").val());
+      num2 = Number($("#second").val());
+      if (operation === '+') return num1 + num2;
+      if (operation === '-') return num1 - num2;
+      if (operation === '*') return num1 * num2;
+      if (operation === '/') return num1 / num2;
+      return 0;
+    });
+  }
+  
+    function calculate_tax(){
+    $("#tax").text(() => {
+      return Number($("#amount").val())*(Number($("#rate").val())/100);
+    });
+  }
+  
+  function calculate_age(){
+    var dob = $("#dob").datepicker("getDate");
+    $("#age").text(() => {
+      return _calculateAge(dob);
+    });
+  }
+
+  function _calculateAge(birthday) { // birthday is a date
+    var ageDifMs = Date.now() - birthday.getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  } 
+
+  </script>
+</h:head>
+    <h:body>
+  <c:choose>
+      <c:when test="${controller.logged_in_bean_prop}">
+        <f:view>
+            <h:form>
+            <fieldset>
+            <legend>Edit Details!</legend>
+                First Name: <h:inputText value="#{photographer.fname}" size="10" /> 
+                Last Name: <h:inputText value="#{photographer.lname}" size="10" /> <br/><br/> 
+                <!--CHECK requiredpattern and change pass back to md5 hashing-->
+                Password: <h:inputSecret id="pass1" value="#{photographer.password}" size="11" /> <br/><br/>
+                <br/><br/>
+                Date of Birth: <h:inputText class="datepicker" value="#{photographer.dob}" a:placeholder="mm/dd/yyyy"/>
+                <br/><br/>
+                Nationality: <h:inputText value="#{photographer.nationality}" size="10" /> <br/><br/>
+                Address: <h:inputText value="#{photographer.address}" size="10" /> <br/> <br/>
+                Education:<br/> High School: <h:selectBooleanCheckbox value="${photographer.educationHS}"/> 
+                                Bachelor's: <h:selectBooleanCheckbox value="${photographer.educationBS}"/>
+                                Master's: <h:selectBooleanCheckbox value="${photographer.educationMS}"/><br/><br/>
+                Experience:<br/> <h:inputTextarea  value="#{photographer.experience}"  /> <br/><br/>
+                Service Charge: <h:inputText  value="#{photographer.servicecharge}" size="10" converterMessage="Service Charge input takes decimal numbers only."/> <br/><br/>
+
+            </fieldset>
+                
+                <h:commandButton type="submit" value="Save Changes" action="#{photographer.update}"/>
+                <!--<h:message for="pass2" style="color:red"/>-->
+            </h:form>
+        </f:view>
+              </c:when>
+    <c:otherwise>
+Sorry, you don't have permission! :(
+    </c:otherwise>
+    </c:choose>
+    </h:body>
+</html>

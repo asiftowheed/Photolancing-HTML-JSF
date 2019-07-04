@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scene Scope="Project" version="2">
+    <Scope Scope="Faces Configuration Only"/>
+    <Scope Scope="Project">
+        <Node id="wrongpassword.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="login.xhtml" x="650" y="150" zoom="true"/>
+        <Node id="loginc.xhtml" x="400" y="450" zoom="true"/>
+        <Node id="newxhtml.xhtml" x="150" y="450" zoom="true"/>
+        <Node id="wrongusername.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="index.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="profile.xhtml" x="770" y="457" zoom="true"/>
+        <Node id="registerp.xhtml" x="150" y="300" zoom="true"/>
+        <Node id="register.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="portfolio.xhtml" x="400" y="300" zoom="true"/>
+    </Scope>
+    <Scope Scope="All Faces Configurations"/>
+</Scene>

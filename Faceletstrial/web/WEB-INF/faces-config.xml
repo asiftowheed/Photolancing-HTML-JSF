@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    <navigation-rule>
+        <from-view-id>/login.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>Username Error</from-outcome>
+            <to-view-id>/wrongusername.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>Password Error</from-outcome>
+            <to-view-id>/wrongpassword.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>Passed</from-outcome>
+            <to-view-id>/portfolio.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/loginc.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>Password Error</from-outcome>
+            <to-view-id>/wrongpassword.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>Username Error</from-outcome>
+            <to-view-id>/wrongusername.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>Passed</from-outcome>
+            <to-view-id>/profile.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <managed-bean>
+        <managed-bean-class>beans.Singleton</managed-bean-class>
+        <managed-bean-name>sing</managed-bean-name>
+        <managed-bean-scope>application</managed-bean-scope>
+        <managed-property>
+            <property-name>DB</property-name>
+            <value>jdbc:derby://localhost:1527/trialproject</value>
+        </managed-property>
+        <managed-property>
+            <property-name>user</property-name>
+            <value>a</value>
+        </managed-property>
+        <managed-property>
+            <property-name>passwd</property-name>
+            <value>b</value>
+        </managed-property>
+    </managed-bean>
+</faces-config>

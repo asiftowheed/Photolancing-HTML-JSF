@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+        <title>Log in</title>
+        <style type="text/css">
+            .even {background-color: dodgerblue}
+            .odd  {background-color: white}
+
+            .button-grey{
+  background-color: darkgray;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 300px;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;    
+}
+
+.button-grey:hover{
+    background-color: gray
+}
+
+
+        </style>    
+
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"></link>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+</h:head>
+    <h:body>
+  <c:choose>
+      <c:when test="${controller.logged_in_bean_prop}">
+        <f:view>
+            <h:form>
+                <h:dataTable style="width: 100%; padding: 10px; text-align: center" value="#{albums.albums}" var="i" rowClasses="someerow">
+                    <h:column>
+                        <f:facet name="header">ID</f:facet>
+                        <div style="padding-bottom: 20px; padding-top: 20px; border-bottom: 1px solid black ">
+                        #{i.ID}
+                        </div>
+                    </h:column>
+                    <h:column>
+                        <f:facet name="header">Name</f:facet>
+                        <div style="padding-bottom: 20px; padding-top: 20px; border-bottom: 1px solid black ">
+                        #{i.albumname}
+                        </div>
+                    </h:column>
+                    <h:column>
+                        <!--<f:facet name="header"></f:facet>                        -->
+                        <div style="padding-bottom: 16px; padding-top: 20px; border-bottom: 1px solid black ">
+                        <h:commandButton value="View Album" action="#{albums.testclick(i)}" />
+                        </div>
+                    </h:column>
+                </h:dataTable>
+                
+                <h:commandButton class="button-grey" value="Back to profile" action="profile.xhtml"/>
+                
+            </h:form>
+        </f:view>
+              </c:when>
+    <c:otherwise>
+Sorry, you don't have permission! :(
+    </c:otherwise>
+    </c:choose>
+    </h:body>
+</html>

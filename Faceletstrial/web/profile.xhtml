@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+        <title>Log in</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        
+        
+        <style>
+
+.accordion, .button {
+  background-color: dodgerblue;
+  border-color: lightblue;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+}
+
+.button-grey{
+  background-color: darkgray;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 300px;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;    
+}
+
+.button-grey:hover{
+    background-color: gray
+}
+
+.active, .accordion:hover, .button:hover {
+  background-color: #2a5cbd;
+}
+
+.panel {
+  padding: 0 18px;
+  background-color: white;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+</style>
+        
+
+
+        
+        
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"></link>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script>
+
+  
+/*                $(document).ready(function() {
+                    $( "#accordion" ).accordion();
+                 } );*/
+    
+    
+
+    
+    $( function() {
+        $( "#tabs" ).tabs({
+          collapsible: true
+        }); 
+    });
+  
+    $( function() {
+        $( "#dob" ).datepicker();
+    });
+    
+    
+                function selectHandler()
+            {
+                var choice = chart.getSelection()[0];
+                console.log("hello")
+                alert(data.getValue(choice.row, 0));
+                var authName = data.getValue(choice.row, 0);
+                for (var a=0; authList.length >a; a++)
+                {
+                    alert(authList[a][0] + " " + authName)
+                    if(authList[a][0]==authName)
+                    {
+                        var id = authList[a][1]
+                        break;
+                    }
+                }
+                var param = {'authName': authName, 'authID': id}
+                alert(param)
+                $("#bookList").load("indivBookList", param)
+            }
+            
+    
+    //graph (charts)
+    
+            google.charts.load('current', {packages: ['corechart', 'bar']});
+            google.charts.setOnLoadCallback(function () {
+                $("#f\\:chartbutton").on("click", null, null, plotIt);
+            });
+
+            function plotIt()
+            {
+                event.preventDefault();
+
+                //var p = $("#f\\:authorID").val();
+                $.post("PhotographerCount", {}, callBackPlot);
+            }
+
+            function callBackPlot(queryStr)
+            {
+                var data = new google.visualization.arrayToDataTable(
+                      $.parseJSON(queryStr)
+                    );
+
+                var options = {
+                    chart: {
+                        title: 'Shoots per Photographer',
+                        subtitle: '',
+                    }
+                };
+
+                var chart = new google.charts.Bar(document.getElementById('plot'));
+                chart.draw(data, google.charts.Bar.convertOptions(options));
+            }
+    
+    // end charts
+    
+    
+    
+    
+    
+  </script>
+</h:head>
+    <h:body>
+  <c:choose>
+      <c:when test="${controller.logged_in_bean_prop}">
+        <f:view>
+            <h:form id="f">
+                
+                
+                <div id="tabs">
+                <ul>
+                  <li><a href="#tab-1">Profile</a></li>
+                  <li><a href="#tab-2">Photographers</a></li>
+                  <li><a href="#tab-3">Reservations</a></li>
+                  <li><a href="#tab-4">History</a></li>
+                </ul>
+
+                    
+                    <div id="tab-1">
+                    <p>
+                        <h1>${customer.fname} ${customer.lname}</h1>
+                        <h3>Date of Birth:</h3>     ${customer.dob}
+                        <h3>Nationality:</h3>       ${customer.nationality}
+                        <h3>Address:</h3>           ${customer.address}
+                    </p>
+                        
+                        <h:commandButton value="Edit Profile" class="button" action="editprofile.xhtml"/><br/><br/>
+                        <h:commandButton value="Log Out" class="button" action="#{customer.logout}"/>
+                        
+                </div>
+
+
+                    
+                    
+                    
+                    <div id="tab-2">
+
+                        <h2>Find Photographers</h2>
+                        
+                        <h:inputText value="#{photographers.with_fname}" a:placeholder="Search by first name ..." size="30"/> <br/><br/>
+                        <h:inputText value="#{photographers.with_address}" a:placeholder="Search by address ..." size="15"/> <label style="padding-left: 20px"/>
+                        <h:inputText value="#{photographers.with_upperlimit}" a:placeholder="Search by rate ..." size="15"/>
+                        <br/>
+                        <div style="padding-top: 50px" >
+                            <h:commandButton value="Search" class="button-grey" />                            
+                        </div>
+                        <br/><br/>
+
+                        
+                    <h:dataTable value="#{photographers.photographers}" var="i" rowClasses="even, odd">
+                    <h:column>
+                        <!--<f:facet name="header">Photographers</f:facet>-->
+                        <!--FIRST ACCORDIAN AND PANEL ***************************************************-->
+                        
+                        <button type = "button" class="accordion">${i.fname} ${i.lname}<br/> ${i.address}</button>
+                        <div class="panel">
+                          <p>
+                                <h3>Date of birth:</h3>     ${i.dob}
+                                <h3>Nationality:</h3>       ${i.nationality}
+                                <h3>Address:</h3>           ${i.address}
+                                <h3>Education:</h3>         High School: <h:selectBooleanCheckbox value="${i.educationHS}" disabled="True"/> 
+                                                            Bachelor's: <h:selectBooleanCheckbox value="${i.educationBS}" disabled="True"/>
+                                                            Master's: <h:selectBooleanCheckbox value="${i.educationMS}" disabled="True"/>
+                                <h3>Experience:</h3>        ${i.experience}
+                                <h3>Service Charges:</h3>   ${i.servicecharge}
+                                <br/><br/>
+                                <h:commandButton value="Make Reservation" class="button" action="#{reservation.beginReservation(i)}"/><br/><br/>
+                                <h:commandButton value="View Albums" class="button" action="#{photographers.viewalbums(i)}" />
+                          </p>
+                        </div><br/><br/>
+
+                        <!--SECOND ACCORDIAN AND PANEL ***************************************************
+
+                        <button type = "button" class="accordion" onclick="#{photographers.viewalbums(i)}">View Albums</button>
+                        <div class="panel">
+                            
+
+
+                            
+                        </div> -->
+<!--                                <h:commandLink value = "View Album2" action="login.xhtml"></h:commandLink>-->
+                        <!--END ******************************************************************************************************-->
+
+                    </h:column>
+                </h:dataTable>
+                    
+<!--
+<p>Click on the buttons to open the collapsible content.</p>
+
+<button type = "button" class="accordion">Section 1</button>
+<div class="panel">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+
+<button type = "button" class="accordion">Section 2</button>
+<div class="panel">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>
+
+<button type = "button" class="accordion">Section 3</button>
+<div class="panel">
+  <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+</div>-->
+                    </div>
+
+
+                    
+                    
+                    
+                    <div id="tab-3">
+
+                        <c:choose>
+                            <c:when test="${reservations.reservations.size() > 0}">
+                        <h:dataTable value="#{reservations.reservations}" var="i" rowClasses="even, odd">
+                    <h:column>
+                        <!--<f:facet name="header">Photographers</f:facet>-->
+                        <!--FIRST ACCORDIAN AND PANEL ***************************************************-->
+                        
+                        <button type = "button" class="accordion">${i.getPhotographername(i.photographerID)}</button>
+                        <div class="panel">
+                          <p>
+                              <h3>Photographer</h3>       ${i.photographerID}
+                              <h3>Venue</h3>           ${i.venue}
+                              <h3>Date:</h3>         ${i.date_of_shoot}
+                              <h3>Time:</h3>           ${i.time_of_shoot}
+                              <h3>Proposed Amount</h3>         ${i.proposedAmount}
+                              <h3>Status</h3>           ${i.status}
+                                <br/><br/>
+                          </p>
+                        </div><br/><br/>
+                    </h:column>
+                </h:dataTable>                    
+                            </c:when>
+                            <c:otherwise>
+                                <h3>You don't have any reservations!<br/>Look up photographers to make a reservation! :D</h3>
+                                </c:otherwise>
+                        </c:choose>
+                    
+
+
+                    </div>
+
+                    
+                <div id="tab-4">
+                    <h:commandButton class="button" value="Plot" id="chartbutton" /><br/><br/>
+                    <div id="plot" style="width: 50%; height: 50%"/>
+                        
+                </div>
+
+                    
+                    
+<script>
+var acc = document.getElementsByClassName("accordion");
+var i;
+
+for (i = 0; acc.length > i ; i++) {
+  acc[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var panel = this.nextElementSibling;
+    if (panel.style.maxHeight){
+      panel.style.maxHeight = null;
+    } else {
+      panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+  });
+}
+</script>
+                    
+                    
+              </div>
+
+            </h:form>
+
+        </f:view>
+              </c:when>
+    <c:otherwise>
+Sorry, you don't have permission! :(
+    </c:otherwise>
+    </c:choose>
+    </h:body>
+</html>

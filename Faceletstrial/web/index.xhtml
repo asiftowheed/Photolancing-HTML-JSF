@@ -1,0 +1,148 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <title>Facelet Title</title>
+        
+        <style type="text/css">
+            .even {background-color: dodgerblue}
+            .odd  {background-color: white}
+
+            
+            .btn btn-primary{
+  background-color: dodgerblue;
+}
+
+.active, .btn btn-primary:hover {
+  background-color: darkblue;
+}
+
+
+        </style>    
+        
+        
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"></link>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"></link>
+        
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  
+    $( function() {
+        $( "#tabs" ).tabs({
+          collapsible: true
+        }); 
+    });
+  
+    $( function() {
+        $( "#dob" ).datepicker();
+    });
+  
+  function calculate(operation){
+    $("#calcResult").text(()=> {
+      num1 = Number($("#first").val());
+      num2 = Number($("#second").val());
+      if (operation === '+') return num1 + num2;
+      if (operation === '-') return num1 - num2;
+      if (operation === '*') return num1 * num2;
+      if (operation === '/') return num1 / num2;
+      return 0;
+    });
+  }
+  
+    function calculate_tax(){
+    $("#tax").text(() => {
+      return Number($("#amount").val())*(Number($("#rate").val())/100);
+    });
+  }
+  
+  function calculate_age(){
+    var dob = $("#dob").datepicker("getDate");
+    $("#age").text(() => {
+      return _calculateAge(dob);
+    });
+  }
+
+  function _calculateAge(birthday) { // birthday is a date
+    var ageDifMs = Date.now() - birthday.getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  } 
+  
+  
+
+  </script>
+    </h:head>
+    <h:body>
+        <h1 style="text-align: center; padding-bottom: 10px; padding-top: 10px">Welcome to PhotoLance!</h1>
+        
+        
+        
+        <div class="bd-example">
+  <div id="carouselExampleCaptions" class="carousel slide" data-ride="carousel">
+    <ol class="carousel-indicators">
+      <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+      <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+      <li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+    </ol>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+          <h:graphicImage name="/images/indeximg1.jpg" class="d-block w-100" style="width: 90px; height: 900px" alt="..."/>
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Share your albums!</h5>
+          <p>Display your skills and get hired</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+          <h:graphicImage name="/images/indeximg2.jpg" class="d-block w-100" style="width: 90px; height: 900px" alt="..."/>
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Reserve exclusive shoots!</h5>
+          <p>Hire photographers for an exclusive session</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <h:graphicImage name="/images/indeximg3.jpg" class="d-block w-100" style="width: 90px; height: 900px" alt="..."/>
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Explore together!</h5>
+          <p>Find photographers from all around the world to suit your requirements</p>
+        </div>
+      </div>
+    </div>
+    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+</div>
+        
+        
+        
+        
+            <br/>
+        <f:view>
+            <h:form>
+                <div class="allign" style="text-align: center">
+                                    <h:inputHidden id="dummy" value="#{sing.DB}"/>                
+                <h:inputHidden id="dummy2" value="#{testbean.test}"/>                
+                <h:commandButton value="Register as Customer" class="btn btn-primary" action="register.xhtml" style="width: 200px"/><br/><br/>
+                <h:commandButton value="Register as Photographer" class="btn btn-secondary" action="registerp.xhtml" style="width: 200px"/><br/><br/>
+                Already a member? <h:commandLink value = "Click here to log in" action="loginc.xhtml"></h:commandLink><br/>
+                OR <br/><h:commandLink value = "Click here to log in as Photographer" action="login.xhtml" style="padding-bottom: 50px"></h:commandLink><br/>
+
+                </div>
+            </h:form>
+        </f:view>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+
+    </h:body>
+</html>
+

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:a="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+<h:head>
+        <title>Log in</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"></link>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  
+    $( function() {
+        $( "#tabs" ).tabs({
+          collapsible: true
+        }); 
+    });
+  
+    $( function() {
+        $( ".datepicker" ).datepicker({
+      changeMonth: true,
+      changeYear: true,
+      yearRange: "1960:2020"
+   });
+    });
+  
+  function calculate(operation){
+    $("#calcResult").text(()=> {
+      num1 = Number($("#first").val());
+      num2 = Number($("#second").val());
+      if (operation === '+') return num1 + num2;
+      if (operation === '-') return num1 - num2;
+      if (operation === '*') return num1 * num2;
+      if (operation === '/') return num1 / num2;
+      return 0;
+    });
+  }
+  
+    function calculate_tax(){
+    $("#tax").text(() => {
+      return Number($("#amount").val())*(Number($("#rate").val())/100);
+    });
+  }
+  
+  function calculate_age(){
+    var dob = $("#dob").datepicker("getDate");
+    $("#age").text(() => {
+      return _calculateAge(dob);
+    });
+  }
+
+  function _calculateAge(birthday) { // birthday is a date
+    var ageDifMs = Date.now() - birthday.getTime();
+    var ageDate = new Date(ageDifMs); // miliseconds from epoch
+    return Math.abs(ageDate.getUTCFullYear() - 1970);
+  } 
+
+  </script>
+</h:head>
+    <h:body>
+  <c:choose>
+      <c:when test="${controller.logged_in_bean_prop}">
+        <f:view>
+            <h:form>
+            <fieldset>
+            <legend>Make a reservation!</legend>
+            Date of Shoot: <h:inputText class="datepicker" value="#{reservation.date_of_shoot}" a:placeholder="mm/dd/yyyy"/>
+            Time: <h:inputText value="#{reservation.time_of_shoot}" a:placeholder="HH:MM" size="10" /> 
+                Venue: <h:inputText value="#{reservation.venue}" size="10" /> 
+                Proposed Amount: <h:inputText value="#{reservation.proposedAmount}" size="10" converterMessage="Proposed Amount input takes decimal numbers only."/> <br/><br/> 
+                <!--CHECK requiredpattern and change pass back to md5 hashing-->
+            </fieldset>
+                
+                <h:commandButton type="submit" value="Create Reservation" action="#{reservation.createReservation}"/>
+                <!--<h:message for="pass2" style="color:red"/>-->
+            </h:form>
+        </f:view>
+              </c:when>
+    <c:otherwise>
+Sorry, you don't have permission! :(
+    </c:otherwise>
+    </c:choose>
+    </h:body>
+</html>
