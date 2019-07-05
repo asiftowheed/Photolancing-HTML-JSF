@@ -1,4 +1,4 @@
-# Photofreelancing-HTML-JSF
+# Photolancing-HTML-JSF
 
 ### The Application:	
 The project involved creating a website serving as a platform for freelancing photographers. Photographers as well as potential customers are required to register to become a member. Once a member, they would have to log in every time in order to use the website’s services. Thus, we will have two sets of web pages:
